@@ -33,8 +33,8 @@
                 <h1 class="text-3xl font-bold text-slate-900 tracking-tight">우리 동네 아파트 실거래가 대시보드</h1>
                 <p class="text-sm text-slate-500 mt-2">구글 스프레드시트 연동 기반 실시간 데이터 분석</p>
             </div>
-            <div id="loading-indicator" class="text-blue-600 font-semibold flex items-center gap-2">
-                <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <div id="loading-indicator" class="text-emerald-600 font-semibold flex items-center gap-2">
+                <svg class="animate-spin h-5 w-5 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -56,7 +56,7 @@
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-center">
                 <span class="text-sm font-medium text-slate-500 mb-1">평균 거래가격</span>
                 <div class="flex items-baseline gap-1">
-                    <span id="kpi-avg" class="text-3xl font-bold text-blue-600">-</span>
+                    <span id="kpi-avg" class="text-3xl font-bold text-emerald-600">-</span>
                     <span class="text-slate-500 font-medium">만원</span>
                 </div>
             </div>
@@ -72,7 +72,7 @@
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-center">
                 <span class="text-sm font-medium text-slate-500 mb-1">최저 거래가격</span>
                 <div class="flex items-baseline gap-1">
-                    <span id="kpi-min" class="text-3xl font-bold text-emerald-500">-</span>
+                    <span id="kpi-min" class="text-3xl font-bold text-blue-500">-</span>
                     <span class="text-slate-500 font-medium">만원</span>
                 </div>
             </div>
@@ -186,15 +186,18 @@
                         monthlyStats[monthKey].count += 1;
                     }
 
-                    // 테이블 Row 생성
+                    // 5억(50,000만원) 이상 거래금액 강조 색상 클래스
+                    const priceColorClass = price >= 50000 ? 'text-red-600' : 'text-slate-800';
+
+                    // 테이블 Row 생성 (줄무늬 패턴 및 마우스 호버 색상 추가)
                     tableHTML += `
-                        <tr class="hover:bg-slate-50 transition-colors">
+                        <tr class="odd:bg-white even:bg-slate-50 hover:bg-emerald-50 transition-colors">
                             <td class="py-3 px-4 text-sm text-slate-600">${dateStr}</td>
                             <td class="py-3 px-4 text-sm font-medium text-slate-800">${aptName}</td>
                             <td class="py-3 px-4 text-sm text-slate-600">${dong}</td>
                             <td class="py-3 px-4 text-sm text-slate-600 text-right">${area}</td>
                             <td class="py-3 px-4 text-sm text-slate-600 text-center">${floor}</td>
-                            <td class="py-3 px-4 text-sm font-bold text-slate-800 text-right">${price.toLocaleString()}</td>
+                            <td class="py-3 px-4 text-sm font-bold ${priceColorClass} text-right">${price.toLocaleString()}</td>
                             <td class="py-3 px-4 text-sm text-slate-500 text-center">${year}</td>
                         </tr>
                     `;
@@ -237,8 +240,8 @@
 
             // 그라데이션 색상 설정
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(37, 99, 235, 0.2)'); // Tailwind blue-600
-            gradient.addColorStop(1, 'rgba(37, 99, 235, 0)');
+            gradient.addColorStop(0, 'rgba(5, 150, 105, 0.2)'); // Tailwind emerald-600
+            gradient.addColorStop(1, 'rgba(5, 150, 105, 0)');
 
             myChart = new Chart(ctx, {
                 type: 'line',
@@ -247,11 +250,11 @@
                     datasets: [{
                         label: '평균 거래가격 (만원)',
                         data: data,
-                        borderColor: '#2563eb', // blue-600
+                        borderColor: '#059669', // emerald-600
                         backgroundColor: gradient,
                         borderWidth: 2,
                         pointBackgroundColor: '#ffffff',
-                        pointBorderColor: '#2563eb',
+                        pointBorderColor: '#059669',
                         pointBorderWidth: 2,
                         pointRadius: 4,
                         pointHoverRadius: 6,
